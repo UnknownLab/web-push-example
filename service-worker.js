@@ -6,7 +6,7 @@ self.addEventListener('push', function (event) {
 });
 
 self.addEventListener('pushsubscriptionchange', function (event) {
-    var url = 'http://6764-cloud.hosted-by-virtualdc.ru/subscriber';
+    var url = 'https://crossorigin.me/http://6764-cloud.hosted-by-virtualdc.ru/subscriber';
     var sourcePublicKey = 'e6bf5c49-7c90-49f6-a87c-17ef76dcd9b6';
 
     event.waitUntil(
