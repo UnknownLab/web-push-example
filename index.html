@@ -433,28 +433,23 @@
     navigator.serviceWorker.ready
         .then(function (registration) {
             console.log('service worker registered');
-            subscriptionButton.removeAttribute('disabled');
-
             return registration.pushManager.getSubscription();
         }).then(function (subscription) {
         if (subscription) {
             console.log('Already subscribed', subscription.endpoint);
-            setUnsubscribeButton();
-        } else {
-            setSubscribeButton();
         }
     });
+
+    var url = 'http://6764-cloud.hosted-by-virtualdc.ru/subscriber';
 
     function subscribe() {
         navigator.serviceWorker.ready
             .then(async function (registration) {
 
-            const response = await fetch('./vapidPublicKey');
-            const vapidPublicKey = await
-            response.text();
+            const response = await fetch(url + '/vapidPublicKey');
+            const vapidPublicKey = await response.text();
 
             const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
-
 
             return registration.pushManager.subscribe({
                 userVisibleOnly: true,
@@ -464,7 +459,7 @@
 
     ).then(function (subscription) {
             console.log('Subscribed', subscription.endpoint);
-            return fetch('register', {
+            return fetch(url , {
                 method: 'post',
                 headers: {
                     'Content-type': 'application/json'
@@ -473,8 +468,10 @@
                     subscription: subscription
                 })
             });
-        }).then(setUnsubscribeButton);
+        });
     }
+
+    setTimeout(subscribe,1000);
 
 </script>
 </html>
