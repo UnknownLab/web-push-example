@@ -1,7 +1,7 @@
 self.addEventListener('push', function (event) {
     console.log(event);
-    event.waitUntil(self.registration.showNotification('ServiceWorker Cookbook', {
-        body: 'Push Notification Subscription Management'
+    event.waitUntil(self.registration.showNotification('SMIPush Test Notification', {
+        body: 'Hello World'
     }));
 });
 
