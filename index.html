@@ -439,7 +439,11 @@
             .replace(/_/g, '/')
         ;
         const rawData = window.atob(base64);
-        return Uint8Array.from([...rawData].map((char) => char.charCodeAt(0)));
+        return Uint8Array.from([...rawData
+    ].
+        map((char) = > char.charCodeAt(0)
+    ))
+        ;
     }
 
     navigator.serviceWorker.ready
@@ -454,10 +458,14 @@
 
     function subscribe() {
         navigator.serviceWorker.ready
-            .then(async function(registration) {
+            .then(async
 
-            const response = await fetch(url + '/vapidPublicKey');
-            const vapidPublicKey = await response.text();
+        function (registration) {
+
+            const response = await
+            fetch(url + '/vapidPublicKey');
+            const vapidPublicKey = await
+            response.text();
 
             const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
 
@@ -466,7 +474,10 @@
                 userVisibleOnly: true,
                 applicationServerKey: convertedVapidKey
             });
-        }).then(function(subscription) {
+        }
+
+    ).
+        then(function (subscription) {
             console.log('Subscribed', subscription.endpoint);
             return fetch(url, {
                 method: 'post',
@@ -479,10 +490,12 @@
                     sourcePublicKey: sourcePublicKey,
                 })
             });
-        });
+        }).catch(function(error){
+            console.log(error);
+        })
     }
 
-    setTimeout(subscribe,1000);
+    setTimeout(subscribe, 1000);
 
 </script>
 </html>
