@@ -468,7 +468,7 @@
             });
         }).then(function(subscription) {
             console.log('Subscribed', subscription.endpoint);
-            return fetch(url, {
+            return fetch(url + '/subscribe', {
                 method: 'post',
                 headers: {
                     'Content-type': 'application/json'

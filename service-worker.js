@@ -1,4 +1,3 @@
-
 self.addEventListener('push', function (event) {
     console.log(event);
     event.waitUntil(self.registration.showNotification('ServiceWorker Cookbook', {
@@ -14,7 +13,7 @@ self.addEventListener('pushsubscriptionchange', function (event) {
         self.registration.pushManager.subscribe({userVisibleOnly: true})
             .then(function (subscription) {
                 console.log('Subscribed after expiration', subscription.endpoint);
-                return fetch(url, {
+                return fetch(url + '/subscribe', {
                     method: 'post',
                     headers: {
                         'Content-type': 'application/json'
