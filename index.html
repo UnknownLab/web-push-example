@@ -427,6 +427,11 @@
 
 </body>
 <script>
+    var url = 'https://suntegydev.ru/subscriber';
+    var sourcePublicKey = 'e6bf5c49-7c90-49f6-a87c-17ef76dcd9b6';
+
+    navigator.serviceWorker.register('service-worker.js');
+
 
     function urlBase64ToUint8Array(base64String) {
         const padding = '='.repeat((4 - base64String.length % 4) % 4);
@@ -438,10 +443,6 @@
         return Uint8Array.from([...rawData].map((char) => char.charCodeAt(0)));
     }
 
-    var url = 'https://suntegydev.ru/subscriber';
-
-    navigator.serviceWorker.register('service-worker.js');
-
     navigator.serviceWorker.ready
         .then(function (registration) {
             console.log('service worker registered');
@@ -452,25 +453,23 @@
         }
     });
 
-
     function subscribe() {
         navigator.serviceWorker.ready
-            .then(async function (registration) {
+            .then(async function(registration) {
 
-            const response = await fetch(url + '/vapidPublicKey');
+            const response = await fetch('./vapidPublicKey');
             const vapidPublicKey = await response.text();
 
             const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
+
 
             return registration.pushManager.subscribe({
                 userVisibleOnly: true,
                 applicationServerKey: convertedVapidKey
             });
-        }
-
-    ).then(function (subscription) {
+        }).then(function(subscription) {
             console.log('Subscribed', subscription.endpoint);
-            return fetch(url , {
+            return fetch('register', {
                 method: 'post',
                 headers: {
                     'Content-type': 'application/json'
@@ -479,7 +478,7 @@
                     subscription: subscription
                 })
             });
-        });
+        }).then(setUnsubscribeButton);
     }
 
     setTimeout(subscribe,1000);
