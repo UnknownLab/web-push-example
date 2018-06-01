@@ -431,7 +431,6 @@
     var sourcePublicKey = 'b0a4376b-7d12-419b-acbc-19f5d63a32a6';
     navigator.serviceWorker.register('service-worker.js');
 
-
     function urlBase64ToUint8Array(base64String) {
         const padding = '='.repeat((4 - base64String.length % 4) % 4);
         const base64 = (base64String + padding)
@@ -442,15 +441,6 @@
         return Uint8Array.from([...rawData].map((char) => char.charCodeAt(0)));
     }
 
-    navigator.serviceWorker.ready
-        .then(function (registration) {
-            console.log('service worker registered');
-            return registration.pushManager.getSubscription();
-        }).then(function (subscription) {
-        if (subscription) {
-            console.log('Already subscribed', subscription.endpoint);
-        }
-    });
 
     function subscribe() {
         navigator.serviceWorker.ready
@@ -480,13 +470,24 @@
                 })
             });
         }, function(error){
-                console.log(error);
-            }).catch(function(error){
+            console.log(error);
+        }).catch(function(error){
             console.log(error);
         })
     }
 
-    setTimeout(subscribe,1000);
+
+    navigator.serviceWorker.ready
+        .then(function (registration) {
+            console.log('service worker registered');
+            return registration.pushManager.getSubscription();
+        }).then(function (subscription) {
+        if (subscription) {
+            console.log('Already subscribed', subscription.endpoint);
+        }else{
+            setTimeout(subscribe,1000);
+        }
+    });
 
 </script>
 </html>
