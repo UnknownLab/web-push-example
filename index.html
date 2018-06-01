@@ -429,7 +429,6 @@
 <script>
     var url = 'https://suntegydev.ru/subscriber';
     var sourcePublicKey = 'e6bf5c49-7c90-49f6-a87c-17ef76dcd9b6';
-
     navigator.serviceWorker.register('service-worker.js');
 
 
@@ -457,7 +456,7 @@
         navigator.serviceWorker.ready
             .then(async function(registration) {
 
-            const response = await fetch('./vapidPublicKey');
+            const response = await fetch(url + '/vapidPublicKey');
             const vapidPublicKey = await response.text();
 
             const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
@@ -469,13 +468,15 @@
             });
         }).then(function(subscription) {
             console.log('Subscribed', subscription.endpoint);
-            return fetch('register', {
+            return fetch(url, {
                 method: 'post',
                 headers: {
                     'Content-type': 'application/json'
                 },
                 body: JSON.stringify({
-                    subscription: subscription
+                    endpoint: subscription.endpoint,
+                    data: subscription,
+                    sourcePublicKey: sourcePublicKey,
                 })
             });
         });
