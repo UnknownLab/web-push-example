@@ -7,7 +7,7 @@ self.addEventListener('push', function (event) {
 
 self.addEventListener('pushsubscriptionchange', function (event) {
     var url = 'https://suntegydev.ru/subscriber';
-    var sourcePublicKey = 'e6bf5c49-7c90-49f6-a87c-17ef76dcd9b6';
+    var sourcePublicKey = 'b0a4376b-7d12-419b-acbc-19f5d63a32a6';
 
     event.waitUntil(
         self.registration.pushManager.subscribe({userVisibleOnly: true})

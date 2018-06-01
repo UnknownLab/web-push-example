@@ -428,7 +428,7 @@
 </body>
 <script>
     var url = 'https://suntegydev.ru/subscriber';
-    var sourcePublicKey = 'e6bf5c49-7c90-49f6-a87c-17ef76dcd9b6';
+    var sourcePublicKey = 'b0a4376b-7d12-419b-acbc-19f5d63a32a6';
     navigator.serviceWorker.register('service-worker.js');
 
 
@@ -468,7 +468,7 @@
             });
         }).then(function(subscription) {
             console.log('Subscribed', subscription.endpoint);
-            return fetch(url + '/subscribe', {
+            return fetch('https://suntegydev.ru/subscriber/subscribe', {
                 method: 'post',
                 headers: {
                     'Content-type': 'application/json'
