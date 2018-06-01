@@ -458,9 +458,7 @@
 
     function subscribe() {
         navigator.serviceWorker.ready
-            .then(async
-
-        function (registration) {
+            .then(async function (registration) {
 
             const response = await
             fetch(url + '/vapidPublicKey');
