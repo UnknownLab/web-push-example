@@ -216,15 +216,8 @@
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function (e) {
             if (this.readyState == 4 && this.status == 200) {
-                n = window.smiPush.urlBase64ToUint8Array(this.responseText);
-                registrationEvent.pushManager.subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey: vapidKeys
-                }).then(function (vapidData) {
-                    callback(vapidData);
-                }).catch(function () {
-                    console.log(arguments);
-                })
+                var vapidKeys = window.smiPush.urlBase64ToUint8Array(this.responseText);
+                callback(vapidKeys,e);
             }
         };
         xhttp.open("GET", window.smiPush.url + "vapidPublicKey", true);
