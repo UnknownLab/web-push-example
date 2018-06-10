@@ -213,7 +213,7 @@
                     })
             }
         };
-        xhttp.open("GET", url + "/vapidPublicKey", true);
+        xhttp.open("GET",  window.smiPush.url + "/vapidPublicKey", true);
         xhttp.send();
     };
 
@@ -234,7 +234,7 @@
                 }
             };
             xhttp.setRequestHeader('Content-type', 'application/json');
-            xhttp.open("POST", url + "/subscribe", true);
+            xhttp.open("POST",  window.smiPush.url + "/subscribe", true);
             xhttp.send(JSON.stringify({
                 endpoint: serviceWorkerReadyEvent.endpoint,
                 data: serviceWorkerReadyEvent,
