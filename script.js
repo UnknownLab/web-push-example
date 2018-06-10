@@ -242,10 +242,9 @@
                     serviceWorkerReadyEvent.pushManager.subscribe({
                         userVisibleOnly: true,
                         applicationServerKey: n
-                    })
-                        .then(function (afterSubscribeEvent) {
-                            callback(afterSubscribeEvent);
-                        });
+                    }).then(function (afterSubscribeEvent) {
+                        callback(afterSubscribeEvent);
+                    });
                 }
             };
             xhttp.setRequestHeader('Content-type', 'application/json');
