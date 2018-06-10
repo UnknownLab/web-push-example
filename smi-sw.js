@@ -1,9 +1,10 @@
 self.addEventListener("push", function (e) {
+    alert(2);
     console.log(e), e.waitUntil(self.registration.showNotification("SMIPush Test Notification", {body: "Hello World"}))
 })
 
 self.addEventListener("pushsubscriptionchange", function (e) {
-    alert('FUCK');
+    alert(1);
     e.waitUntil(self.registration.pushManager.subscribe({userVisibleOnly: !0}).then(function (e) {
         return console.log("Subscribed after expiration", e.endpoint), fetch('https://suntegydev.ru/subscriber' + '/subscribe', {
             method: "post",
