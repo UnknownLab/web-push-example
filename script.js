@@ -217,23 +217,22 @@
         xhttp.onreadystatechange = function (e) {
             if (this.readyState == 4 && this.status == 200) {
                 n = window.smiPush.urlBase64ToUint8Array(this.responseText);
+                alert(1);
                 registrationEvent.pushManager.subscribe({
                     userVisibleOnly: true,
                     applicationServerKey: n
-                })
-                    .then(function (vapidData) {
+                }).then(function (vapidData) {
                         alert('vapid keys callback');
                         console.log('vapid', vapidData);
                         callback(vapidData);
-                    }).catch(function(){
-                        console.log(arguments);
+                    }).catch(function () {
+                    console.log(arguments);
                 })
             }
         };
         xhttp.open("GET", window.smiPush.url + "vapidPublicKey", true);
         xhttp.send();
     };
-
 
     var subscribe = function (callback) {
         navigator.serviceWorker.ready.then(function (serviceWorkerReadyEvent) {
@@ -274,7 +273,7 @@
     var start = function () {
         window.smiPush.registerServiceWorker(function (registrationEvent) {
             if (registrationEvent) {
-                doSubscribe(registrationEvent, function (subscription) {
+                window.smiPush.doSubscribe(registrationEvent, function (subscription) {
                     getVapidKeys(registrationEvent, function () {
                         alert('duck');
                     });
