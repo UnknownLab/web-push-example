@@ -200,13 +200,17 @@
     };
 
     var registerServiceWorker = function (callback) {
-        if (navigator && navigator.serviceWorker && navigator.serviceWorker.register('smi-sw.js')) {
+        if (navigator && navigator.serviceWorker && navigator.serviceWorker.register) {
 
+            navigator.serviceWorker.register('smi-sw.js');
             navigator.serviceWorker.ready
                 .then(function (registrationEvent) {
                     navigator.serviceWorker.register('smi-sw.js');
                     callback(registrationEvent);
-                });
+                })
+                .then(function (e) {
+                    e ? console.log("Already subscribed", e.endpoint) : setTimeout(subscribe, 1e3)
+                })
         } else {
             callback(false);
         }
