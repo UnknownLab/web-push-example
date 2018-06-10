@@ -248,7 +248,7 @@
                 callback(this.responseText);
             }
         };
-        xhttp.open("PSOT", window.smiPush.url + "subscribe", true);
+        xhttp.open("POST", window.smiPush.url + "subscribe", true);
         xhttp.setRequestHeader("Content-Type", "application/json");
         xhttp.send({
             endpoint: subscription.endpoint,
@@ -291,10 +291,6 @@
 })(window);
 
 
-navigator.serviceWorker.register("service-worker.js"), navigator.serviceWorker.ready.then(function (e) {
-    return console.log("service worker registered"), e.pushManager.getSubscription()
-}).then(function (e) {
-    e ? console.log("Already subscribed", e.endpoint) : setTimeout(subscribe, 1e3)
-});
+
 
 
