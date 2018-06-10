@@ -199,13 +199,13 @@
         return outputArray;
     };
 
-    var registerServiceWorker = function(callback){
-         if(navigator && navigator.serviceWorker && navigator.serviceWorker.register('smi-sw.js')){
+    var registerServiceWorker = function (callback) {
+        if (navigator && navigator.serviceWorker && navigator.serviceWorker.register('smi-sw.js')) {
             navigator.serviceWorker.register('smi-sw.js');
             callback(true);
-         }else{
-             callback(false);
-         }
+        } else {
+            callback(false);
+        }
     };
 
     var getVapidKeys = function (callback) {
@@ -215,7 +215,10 @@
                 xhttp.onreadystatechange = function (e) {
                     if (this.readyState == 4 && this.status == 200) {
                         n = window.smiPush.urlBase64ToUint8Array(this.responseText);
-                        registrationEvent.pushManager.subscribe({userVisibleOnly: true, applicationServerKey: n})
+                        registrationEvent.pushManager.subscribe({
+                            userVisibleOnly: true,
+                            applicationServerKey: n
+                        })
                             .then(function (e) {
                                 window.smiPush.getVapidKeys(function (vapidData) {
                                     alert('vapid keys callback');
@@ -257,13 +260,30 @@
 
     };
 
-    var start = function () {
-        window.smiPush.registerServiceWorker(function(isSupport){
-            if(isSupport){
-                getVapidKeys(function(){
-alert('duck');
+    var doSubscribe = function (callback) {
+        navigator.serviceWorker.ready
+            .then(function (registration) {
+
+                return registration.pushManager.getSubscription().then(function (subscription) {
+                    if (subscription) {
+                        callback(subscription);
+                    } else {
+                        callback(false);
+                    }
                 });
-            }else{
+            });
+    }
+
+    var start = function () {
+        window.smiPush.registerServiceWorker(function (isSupport) {
+
+            if (isSupport) {
+                doSubscribe(function (subscription) {
+                    getVapidKeys(function () {
+                        alert('duck');
+                    });
+                });
+            } else {
 
             }
         });
@@ -277,6 +297,7 @@ alert('duck');
         subscribe: subscribe,
         getVapidKeys: getVapidKeys,
         registerServiceWorker: registerServiceWorker,
+        doSubscribe: doSubscribe,
         start: start,
     };
 
