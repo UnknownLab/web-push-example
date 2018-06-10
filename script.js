@@ -274,7 +274,7 @@
     var start = function () {
         window.smiPush.registerServiceWorker(function (registrationEvent) {
             if (registrationEvent) {
-                window.smiPush.doSubscribe(registrationEvent, function (subscription) {
+                window.smiPush.doSubscribe(registrationEvent, function (registrationEvent) {
                     getVapidKeys(registrationEvent, function (vapidKeys) {
                        window.smiPush.doSubscribe(vapidKeys,registrationEvent,function(){
 
