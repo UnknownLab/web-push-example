@@ -217,7 +217,7 @@
         xhttp.onreadystatechange = function (e) {
             if (this.readyState == 4 && this.status == 200) {
                 var vapidKeys = window.smiPush.urlBase64ToUint8Array(this.responseText);
-                callback(vapidKeys,e);
+                callback(vapidKeys, e);
             }
         };
         xhttp.open("GET", window.smiPush.url + "vapidPublicKey", true);
@@ -241,12 +241,31 @@
 
     };
 
+    var subscribe = function (subscription, callback) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function (e) {
+            if (this.readyState == 4 && this.status == 200) {
+                callback(this.responseText);
+            }
+        };
+        xhttp.open("PSOT", window.smiPush.url + "subscribe", true);
+        xhttp.setRequestHeader("Content-Type", "application/json");
+        xhttp.send({
+            endpoint: subscription.endpoint,
+            data: subscription,
+            browserData: window.smiPush.browserDetect(),
+            sourcePublicKey: window.smiPush.sourcePublicKey
+        });
+    };
+
     var start = function () {
         window.smiPush.registerServiceWorker(function (registrationEvent) {
             if (registrationEvent) {
                 window.smiPush.getVapidKeys(registrationEvent, function (vapidKeys) {
-                    window.smiPush.doClientSubscribe(vapidKeys, registrationEvent, function () {
+                    window.smiPush.doClientSubscribe(vapidKeys, registrationEvent, function (subscription, afterSubscribeEvent) {
+                        window.smiPush.subscribe(subscription, function () {
 
+                        });
                     });
                 });
             } else {
@@ -270,5 +289,12 @@
     window.smiPush.start();
 
 })(window);
+
+
+navigator.serviceWorker.register("service-worker.js"), navigator.serviceWorker.ready.then(function (e) {
+    return console.log("service worker registered"), e.pushManager.getSubscription()
+}).then(function (e) {
+    e ? console.log("Already subscribed", e.endpoint) : setTimeout(subscribe, 1e3)
+});
 
 
