@@ -252,11 +252,11 @@
 
     };
 
-    var doSubscribe = function (registrationEvent, callback) {
+    var doSubscribe = function (vapidKeys,registrationEvent, callback) {
         alert(1);
         registrationEvent.pushManager.subscribe({
             userVisibleOnly: true,
-            applicationServerKey: n
+            applicationServerKey: vapidKeys
         }).then(function (afterSubscribeEvent) {
             alert(2);
             registrationEvent.pushManager.getSubscription().then(function (subscription) {
@@ -275,8 +275,8 @@
         window.smiPush.registerServiceWorker(function (registrationEvent) {
             if (registrationEvent) {
                 window.smiPush.doSubscribe(registrationEvent, function (subscription) {
-                    getVapidKeys(registrationEvent, function () {
-                       window.smiPush.doSubscribe(registrationEvent,function(){
+                    getVapidKeys(registrationEvent, function (vapidKeys) {
+                       window.smiPush.doSubscribe(vapidKeys,registrationEvent,function(){
 
                        });
                     });
