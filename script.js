@@ -275,7 +275,7 @@
         window.smiPush.registerServiceWorker(function (registrationEvent) {
 
             if (registrationEvent) {
-                doSubscribe(function (registrationEvent, subscription) {
+                doSubscribe(registrationEvent, function (subscription) {
                     getVapidKeys(function () {
                         alert('duck');
                     });
