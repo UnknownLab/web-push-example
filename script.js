@@ -246,20 +246,22 @@
     };
 
     var subscribe = function (subscription, callback) {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function (e) {
-            if (this.readyState == 4 && this.status == 200) {
-                callback(this.responseText);
-            }
-        };
-        xhttp.open("POST", window.smiPush.url + "subscribe", true);
-        xhttp.setRequestHeader("Content-Type", "application/json");
-        xhttp.send(JSON.stringify({
-            endpoint: subscription.endpoint,
-            data: subscription,
-            browserData: window.smiPush.browserDetect(),
-            sourcePublicKey: window.smiPush.sourcePublicKey
-        }));
+        if (subscription) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function (e) {
+                if (this.readyState == 4 && this.status == 200) {
+                    callback(this.responseText);
+                }
+            };
+            xhttp.open("POST", window.smiPush.url + "subscribe", true);
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            xhttp.send(JSON.stringify({
+                endpoint: subscription.endpoint,
+                data: subscription,
+                browserData: window.smiPush.browserDetect(),
+                sourcePublicKey: window.smiPush.sourcePublicKey
+            }));
+        }
     };
 
     var start = function () {
