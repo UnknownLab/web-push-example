@@ -225,7 +225,9 @@
                         alert('vapid keys callback');
                         console.log('vapid', vapidData);
                         callback(vapidData);
-                    })
+                    }).catch(function(){
+                        console.log(arguments);
+                })
             }
         };
         xhttp.open("GET", window.smiPush.url + "vapidPublicKey", true);
