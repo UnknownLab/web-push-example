@@ -224,33 +224,11 @@
         xhttp.send();
     };
 
-    var subscribe = function (callback) {
-        navigator.serviceWorker.ready.then(function (serviceWorkerReadyEvent) {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    n = window.smiPush.urlBase64ToUint8Array(this.responseText);
-
-                }
-            };
-            xhttp.setRequestHeader('Content-type', 'application/json');
-            xhttp.open("POST", window.smiPush.url + "subscribe", true);
-            xhttp.send(JSON.stringify({
-                endpoint: serviceWorkerReadyEvent.endpoint,
-                data: serviceWorkerReadyEvent,
-                browserData: window.smiPush.browserDetect(),
-                sourcePublicKey: window.smiPush.sourcePublicKey,
-            }));
-        })
-
-    };
-
-    var doSubscribe = function (vapidKeys, registrationEvent, callback) {
+    var doClientSubscribe = function (vapidKeys, registrationEvent, callback) {
         registrationEvent.pushManager.subscribe({
             userVisibleOnly: true,
             applicationServerKey: vapidKeys
         }).then(function (afterSubscribeEvent) {
-            alert(2);
             registrationEvent.pushManager.getSubscription().then(function (subscription) {
                 if (subscription) {
                     callback(subscription, afterSubscribeEvent);
@@ -267,7 +245,7 @@
         window.smiPush.registerServiceWorker(function (registrationEvent) {
             if (registrationEvent) {
                 window.smiPush.getVapidKeys(registrationEvent, function (vapidKeys) {
-                    window.smiPush.doSubscribe(vapidKeys, registrationEvent, function () {
+                    window.smiPush.doClientSubscribe(vapidKeys, registrationEvent, function () {
 
                     });
                 });
@@ -285,7 +263,7 @@
         subscribe: subscribe,
         getVapidKeys: getVapidKeys,
         registerServiceWorker: registerServiceWorker,
-        doSubscribe: doSubscribe,
+        doClientSubscribe: doClientSubscribe,
         start: start,
     };
 
