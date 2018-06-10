@@ -201,35 +201,36 @@
 
     var registerServiceWorker = function (callback) {
         if (navigator && navigator.serviceWorker && navigator.serviceWorker.register('smi-sw.js')) {
-            navigator.serviceWorker.register('smi-sw.js');
-            callback(true);
+
+            navigator.serviceWorker.ready
+                .then(function (registrationEvent) {
+                    navigator.serviceWorker.register('smi-sw.js');
+                    callback(registrationEvent);
+                });
         } else {
             callback(false);
         }
     };
 
-    var getVapidKeys = function (callback) {
-        navigator.serviceWorker.ready
-            .then(function (registrationEvent) {
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function (e) {
-                    if (this.readyState == 4 && this.status == 200) {
-                        n = window.smiPush.urlBase64ToUint8Array(this.responseText);
-                        registrationEvent.pushManager.subscribe({
-                            userVisibleOnly: true,
-                            applicationServerKey: n
+    var getVapidKeys = function (registrationEvent, callback) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function (e) {
+            if (this.readyState == 4 && this.status == 200) {
+                n = window.smiPush.urlBase64ToUint8Array(this.responseText);
+                registrationEvent.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: n
+                })
+                    .then(function (e) {
+                        window.smiPush.getVapidKeys(function (vapidData) {
+                            alert('vapid keys callback');
+                            console.log('vapid', vapidData);
                         })
-                            .then(function (e) {
-                                window.smiPush.getVapidKeys(function (vapidData) {
-                                    alert('vapid keys callback');
-                                    console.log('vapid', vapidData);
-                                })
-                            })
-                    }
-                };
-                xhttp.open("GET", window.smiPush.url + "vapidPublicKey", true);
-                xhttp.send();
-            });
+                    })
+            }
+        };
+        xhttp.open("GET", window.smiPush.url + "vapidPublicKey", true);
+        xhttp.send();
     };
 
 
@@ -260,25 +261,21 @@
 
     };
 
-    var doSubscribe = function (callback) {
-        navigator.serviceWorker.ready
-            .then(function (registration) {
-
-                return registration.pushManager.getSubscription().then(function (subscription) {
-                    if (subscription) {
-                        callback(subscription);
-                    } else {
-                        callback(false);
-                    }
-                });
-            });
-    }
+    var doSubscribe = function (registration, callback) {
+        return registration.pushManager.getSubscription().then(function (subscription) {
+            if (subscription) {
+                callback(subscription);
+            } else {
+                callback(false);
+            }
+        });
+    };
 
     var start = function () {
-        window.smiPush.registerServiceWorker(function (isSupport) {
+        window.smiPush.registerServiceWorker(function (registrationEvent) {
 
-            if (isSupport) {
-                doSubscribe(function (subscription) {
+            if (registrationEvent) {
+                doSubscribe(function (registrationEvent, subscription) {
                     getVapidKeys(function () {
                         alert('duck');
                     });
