@@ -276,7 +276,7 @@
 
             if (registrationEvent) {
                 doSubscribe(registrationEvent, function (subscription) {
-                    getVapidKeys(function () {
+                    getVapidKeys(registrationEvent, function () {
                         alert('duck');
                     });
                 });
