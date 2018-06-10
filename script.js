@@ -221,11 +221,10 @@
                     userVisibleOnly: true,
                     applicationServerKey: n
                 })
-                    .then(function (e) {
-                        window.smiPush.getVapidKeys(function (vapidData) {
-                            alert('vapid keys callback');
-                            console.log('vapid', vapidData);
-                        })
+                    .then(function (vapidData) {
+                        alert('vapid keys callback');
+                        console.log('vapid', vapidData);
+                        callback(vapidData);
                     })
             }
         };
@@ -273,7 +272,6 @@
 
     var start = function () {
         window.smiPush.registerServiceWorker(function (registrationEvent) {
-
             if (registrationEvent) {
                 doSubscribe(registrationEvent, function (subscription) {
                     getVapidKeys(registrationEvent, function () {
