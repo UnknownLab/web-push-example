@@ -219,10 +219,10 @@
                 n = window.smiPush.urlBase64ToUint8Array(this.responseText);
                 registrationEvent.pushManager.subscribe({
                     userVisibleOnly: true,
-                    applicationServerKey: n
+                    applicationServerKey: vapidKeys
                 }).then(function (vapidData) {
-                        callback(vapidData);
-                    }).catch(function () {
+                    callback(vapidData);
+                }).catch(function () {
                     console.log(arguments);
                 })
             }
@@ -252,8 +252,7 @@
 
     };
 
-    var doSubscribe = function (vapidKeys,registrationEvent, callback) {
-        alert(1);
+    var doSubscribe = function (vapidKeys, registrationEvent, callback) {
         registrationEvent.pushManager.subscribe({
             userVisibleOnly: true,
             applicationServerKey: vapidKeys
@@ -261,7 +260,7 @@
             alert(2);
             registrationEvent.pushManager.getSubscription().then(function (subscription) {
                 if (subscription) {
-                    callback(subscription,afterSubscribeEvent);
+                    callback(subscription, afterSubscribeEvent);
                 } else {
                     callback(false);
                 }
@@ -274,11 +273,9 @@
     var start = function () {
         window.smiPush.registerServiceWorker(function (registrationEvent) {
             if (registrationEvent) {
-                window.smiPush.doSubscribe(registrationEvent, function (registrationEvent) {
-                    getVapidKeys(registrationEvent, function (vapidKeys) {
-                       window.smiPush.doSubscribe(vapidKeys,registrationEvent,function(){
+                window.smiPush.getVapidKeys(registrationEvent, function (vapidKeys) {
+                    window.smiPush.doSubscribe(vapidKeys, registrationEvent, function () {
 
-                       });
                     });
                 });
             } else {
