@@ -250,12 +250,12 @@
         };
         xhttp.open("POST", window.smiPush.url + "subscribe", true);
         xhttp.setRequestHeader("Content-Type", "application/json");
-        xhttp.send({
+        xhttp.send(JSON.stringify({
             endpoint: subscription.endpoint,
             data: subscription,
             browserData: window.smiPush.browserDetect(),
             sourcePublicKey: window.smiPush.sourcePublicKey
-        });
+        }));
     };
 
     var start = function () {
@@ -289,8 +289,4 @@
     window.smiPush.start();
 
 })(window);
-
-
-
-
 
