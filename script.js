@@ -217,13 +217,10 @@
         xhttp.onreadystatechange = function (e) {
             if (this.readyState == 4 && this.status == 200) {
                 n = window.smiPush.urlBase64ToUint8Array(this.responseText);
-                alert(1);
                 registrationEvent.pushManager.subscribe({
                     userVisibleOnly: true,
                     applicationServerKey: n
                 }).then(function (vapidData) {
-                        alert('vapid keys callback');
-                        console.log('vapid', vapidData);
                         callback(vapidData);
                     }).catch(function () {
                     console.log(arguments);
@@ -240,12 +237,7 @@
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     n = window.smiPush.urlBase64ToUint8Array(this.responseText);
-                    serviceWorkerReadyEvent.pushManager.subscribe({
-                        userVisibleOnly: true,
-                        applicationServerKey: n
-                    }).then(function (afterSubscribeEvent) {
-                        callback(afterSubscribeEvent);
-                    });
+
                 }
             };
             xhttp.setRequestHeader('Content-type', 'application/json');
@@ -260,14 +252,23 @@
 
     };
 
-    var doSubscribe = function (registration, callback) {
-        return registration.pushManager.getSubscription().then(function (subscription) {
-            if (subscription) {
-                callback(subscription);
-            } else {
-                callback(false);
-            }
+    var doSubscribe = function (registrationEvent, callback) {
+        alert(1);
+        registrationEvent.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: n
+        }).then(function (afterSubscribeEvent) {
+            alert(2);
+            registrationEvent.pushManager.getSubscription().then(function (subscription) {
+                if (subscription) {
+                    callback(subscription,afterSubscribeEvent);
+                } else {
+                    callback(false);
+                }
+            });
         });
+
+
     };
 
     var start = function () {
@@ -275,7 +276,9 @@
             if (registrationEvent) {
                 window.smiPush.doSubscribe(registrationEvent, function (subscription) {
                     getVapidKeys(registrationEvent, function () {
-                        alert('duck');
+                       window.smiPush.doSubscribe(registrationEvent,function(){
+
+                       });
                     });
                 });
             } else {
