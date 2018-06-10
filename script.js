@@ -199,22 +199,34 @@
         return outputArray;
     };
 
+    var registerServiceWorker = function(callback){
+         if(navigator && navigator.serviceWorker && navigator.serviceWorker.register('smi-sw.js')){
+            navigator.serviceWorker.register('smi-sw.js');
+            callback(true);
+         }else{
+             callback(false);
+         }
+    };
+
     var getVapidKeys = function (callback) {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                n = window.smiPush.urlBase64ToUint8Array(this.responseText);
-                e.pushManager.subscribe({userVisibleOnly: true, applicationServerKey: n})
-                    .then(function (e) {
-                        window.smiPush.getVapidKeys(function (vapidData) {
-                            alert('vapid keys callback');
-                            console.log('vapid', vapidData);
-                        })
-                    })
-            }
-        };
-        xhttp.open("GET",  window.smiPush.url + "vapidPublicKey", true);
-        xhttp.send();
+        navigator.serviceWorker.ready
+            .then(function (registrationEvent) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function (e) {
+                    if (this.readyState == 4 && this.status == 200) {
+                        n = window.smiPush.urlBase64ToUint8Array(this.responseText);
+                        registrationEvent.pushManager.subscribe({userVisibleOnly: true, applicationServerKey: n})
+                            .then(function (e) {
+                                window.smiPush.getVapidKeys(function (vapidData) {
+                                    alert('vapid keys callback');
+                                    console.log('vapid', vapidData);
+                                })
+                            })
+                    }
+                };
+                xhttp.open("GET", window.smiPush.url + "vapidPublicKey", true);
+                xhttp.send();
+            });
     };
 
 
@@ -234,7 +246,7 @@
                 }
             };
             xhttp.setRequestHeader('Content-type', 'application/json');
-            xhttp.open("POST",  window.smiPush.url + "subscribe", true);
+            xhttp.open("POST", window.smiPush.url + "subscribe", true);
             xhttp.send(JSON.stringify({
                 endpoint: serviceWorkerReadyEvent.endpoint,
                 data: serviceWorkerReadyEvent,
@@ -246,7 +258,15 @@
     };
 
     var start = function () {
-        window.smiPush.subscribe();
+        window.smiPush.registerServiceWorker(function(isSupport){
+            if(isSupport){
+                getVapidKeys(function(){
+alert('duck');
+                });
+            }else{
+
+            }
+        });
     };
 
     window.smiPush = window.smiPush || {
@@ -256,8 +276,11 @@
         urlBase64ToUint8Array: urlBase64ToUint8Array,
         subscribe: subscribe,
         getVapidKeys: getVapidKeys,
+        registerServiceWorker: registerServiceWorker,
         start: start,
     };
+
+    window.smiPush.start();
 
 })(window);
 
