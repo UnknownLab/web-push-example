@@ -205,7 +205,6 @@
             navigator.serviceWorker.register('smi-sw.js');
             navigator.serviceWorker.ready
                 .then(function (registrationEvent) {
-                    navigator.serviceWorker.register('smi-sw.js');
                     if (registrationEvent) {
                         console.log('already registred');
                     } else {
