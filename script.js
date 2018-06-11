@@ -206,10 +206,11 @@
             navigator.serviceWorker.ready
                 .then(function (registrationEvent) {
                     navigator.serviceWorker.register('smi-sw.js');
-                    callback(registrationEvent);
-                })
-                .then(function (e) {
-                    e ? console.log("Already subscribed", e.endpoint) : setTimeout(subscribe, 1e3)
+                    if (registrationEvent) {
+                        console.log('already registred');
+                    } else {
+                        callback(registrationEvent);
+                    }
                 })
         } else {
             callback(false);
