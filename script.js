@@ -205,11 +205,14 @@
             navigator.serviceWorker.register('smi-sw.js');
             navigator.serviceWorker.ready
                 .then(function (registrationEvent) {
-                    if (registrationEvent) {
-                        console.log('already registred');
-                    } else {
-                        callback(registrationEvent);
-                    }
+                    registrationEvent.pushManager.getSubscription().then(function (isExists) {
+                        if (isExists) {
+                            console.log('already registred');
+                        } else {
+                            callback(registrationEvent);
+                        }
+                    })
+
                 })
         } else {
             callback(false);
