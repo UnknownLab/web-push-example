@@ -25,7 +25,11 @@ self.addEventListener('notificationclick', function (event) {
         console.log(data);
         console.log(event);
 
-        clients.openWindow('' + 'click?url=' + event.notification.data.url + '&sourceKey=' + +'&endPoint' + data.endpoint)
+        clients.openWindow('' + 'click?url=' + event.notification.data.url +
+            '&sourceId=' + event.notification.data.sourceId +
+            '&deliveryId' + event.notification.data.deliveryId +
+            '&subscriberId' + event.notification.data.subscriberId
+        )
     }));
 });
 
