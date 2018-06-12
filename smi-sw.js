@@ -6,7 +6,7 @@ self.addEventListener("push", function (event) {
 
     var title = data.title;
     var message = data.text;
-    var icon = data.icon; 
+    var icon = data.icon;
     event.waitUntil(self.registration.showNotification(title, {
         body: message,
         icon: icon,
@@ -16,10 +16,9 @@ self.addEventListener("push", function (event) {
 });
 
 self.addEventListener('notificationclick', function (event) {
-
     event.notification.close();
     event.waitUntil(self.registration.pushManager.getSubscription().then(function (data) {
-        clients.openWindow(event.notification.data.url )
+        clients.openWindow(event.notification.data.url)
     }));
 });
 

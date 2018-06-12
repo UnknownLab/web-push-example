@@ -171,6 +171,8 @@
             }
         }
 
+        var langs = navigator.languages;
+
         return {
             screen: screenSize,
             browser: browser,
@@ -178,6 +180,7 @@
             browserMajorVersion: majorVersion,
             mobile: mobile,
             os: os,
+            languages: langs,
             osVersion: osVersion,
             cookies: cookieEnabled,
             flashVersion: flashVersion
