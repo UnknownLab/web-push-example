@@ -1,5 +1,35 @@
 (function (window) {
 
+    var documentReady = function (fn) {
+        if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+            fn();
+        } else {
+            document.addEventListener('DOMContentLoaded', fn);
+        }
+    };
+
+    var ui = {
+
+        element: function (settings, callback) {
+            setTimeout(function () {
+                documentReady(function () {
+                    var m1 = document.querySelector(".notify_element");
+                    if (m1) {
+                        m1.addEventListener('click', function () {
+                            callback(settings)
+                        });
+                    }
+                });
+            }, 1000);
+        },
+
+        prompt: function (settings, callback) {
+            setTimeout(function () {
+                callback(settings);
+            }, settings.timeout * 1000);
+        }
+    };
+
     var browserDetect = function () {
         var unknown = '-';
 
@@ -235,19 +265,31 @@
         xhttp.send();
     };
 
-    var doClientSubscribe = function (vapidKeys, registrationEvent, callback) {
-        registrationEvent.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: vapidKeys
-        }).then(function (afterSubscribeEvent) {
-            registrationEvent.pushManager.getSubscription().then(function (subscription) {
-                if (subscription) {
-                    callback(subscription, afterSubscribeEvent);
-                } else {
-                    callback(false);
-                }
+    var doClientSubscribe = function (settings, vapidKeys, registrationEvent, callback) {
+        var subscribe = function () {
+            registrationEvent.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: vapidKeys
+            }).then(function (afterSubscribeEvent) {
+                registrationEvent.pushManager.getSubscription().then(function (subscription) {
+                    if (subscription) {
+                        callback(subscription, afterSubscribeEvent);
+                    } else {
+                        callback(false);
+                    }
+                });
             });
-        });
+        };
+
+        if (settings && settings.type) {
+            if (settings.type === 'element') {
+                window.smiPush.ui.element(settings, function () {
+                    subscribe();
+                })
+            }
+        } else {
+            subscribe();
+        }
 
 
     };
@@ -275,11 +317,12 @@
         window.smiPush.registerServiceWorker(function (registrationEvent) {
             if (registrationEvent) {
                 window.smiPush.getVapidKeys(registrationEvent, function (vapidKeys) {
-                    window.smiPush.doClientSubscribe(vapidKeys, registrationEvent, function (subscription, afterSubscribeEvent) {
-                        window.smiPush.subscribe(subscription, function () {
+                    window.smiPush.doClientSubscribe(window.smiPush.settings, vapidKeys, registrationEvent,
+                        function (subscription, afterSubscribeEvent) {
+                            window.smiPush.subscribe(subscription, function () {
 
+                            });
                         });
-                    });
                 });
             } else {
 
@@ -295,7 +338,18 @@
         subscribe: subscribe,
         getVapidKeys: getVapidKeys,
         registerServiceWorker: registerServiceWorker,
+        ui: ui,
         doClientSubscribe: doClientSubscribe,
+        settings: JSON.parse(JSON.stringify({
+            "hint": "Нажмите на кнопку \"Разрешить\", чтобы получать новости с сайта ",
+            "type": "prompt",
+            "title": "Подписка на уведомления",
+            "subject": "Разрешите сайту  отправлять вам уведомления на рабочий стол",
+            "timeout": 5,
+            "textColor": "#000000",
+            "buttonColor": "#536dfe",
+            "backgroundColor": "#ffffff"
+        })),
         start: start,
     };
 
