@@ -9,7 +9,7 @@ self.addEventListener("push", function (event) {
     var icon = data.icon;
     var url = data.url;
 
-    e.waitUntil(self.registration.showNotification(title, {
+    event.waitUntil(self.registration.showNotification(title, {
         body: message,
         icon: icon,
     }))
@@ -19,7 +19,7 @@ self.addEventListener("push", function (event) {
 self.addEventListener('notificationclick', function (event) {
 
     event.notification.close();
-    e.waitUntil(self.registration.pushManager.getSubscription().then(function (data) {
+    event.waitUntil(self.registration.pushManager.getSubscription().then(function (data) {
         console.log(data);
         console.log(event);
 
