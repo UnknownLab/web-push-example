@@ -36,10 +36,14 @@
                 '    </div>';
 
             documentReady(function () {
-                var elem = document.createElement('div');
-                elem.innerHTML = el;
-                document.body.appendChild(elem);
-                window.smiPush.ui.prompt(settings, callback)
+                setTimeout(function () {
+                    var elem = document.createElement('div');
+                    elem.innerHTML = el;
+                    document.body.appendChild(elem);
+                    callback(settings);
+                }, settings.timeout * 1000);
+
+
             })
         }
     };
