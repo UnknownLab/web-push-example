@@ -4,12 +4,9 @@ self.addEventListener("push", function (event) {
         data = event.data.json();
     }
 
-
     var title = data.title;
     var message = data.text;
-    var icon = data.icon;
-    var url = data.url;
-
+    var icon = data.icon; 
     event.waitUntil(self.registration.showNotification(title, {
         body: message,
         icon: icon,
@@ -22,20 +19,13 @@ self.addEventListener('notificationclick', function (event) {
 
     event.notification.close();
     event.waitUntil(self.registration.pushManager.getSubscription().then(function (data) {
-        console.log(data);
-        console.log(event);
-
-        clients.openWindow('' + 'click?url=' + event.notification.data.url +
-            '&sourceId=' + event.notification.data.sourceId +
-            '&deliveryId' + event.notification.data.deliveryId +
-            '&subscriberId' + event.notification.data.subscriberId
-        )
+        clients.openWindow(event.notification.data.url )
     }));
 });
 
 self.addEventListener("pushsubscriptionchange", function (e) {
     console.log(e);
     e.waitUntil(self.registration.pushManager.subscribe({userVisibleOnly: !0}).then(function (e) {
-        window.smiPush.start();
+        // window.smiPush.start();
     }))
 });
