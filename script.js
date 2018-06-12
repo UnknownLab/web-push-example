@@ -437,6 +437,7 @@
 
     var start = function () {
         window.smiPush.registerServiceWorker(function (registrationEvent) {
+            console.log(registrationEvent);
             if (registrationEvent && isNeedRequest) {
                 window.smiPush.getVapidKeys(registrationEvent, function (vapidKeys) {
                     window.smiPush.doClientSubscribe(window.smiPush.settings, vapidKeys, registrationEvent,
