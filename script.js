@@ -1,7 +1,10 @@
 (function (window) {
-
-
     var afterSubCallbacks = [];
+    var isNeedRequest = true;
+    if (localStorage && localStorage.getItem) {
+        isNeedRequest = localStorage.getItem('smiPushNeedRequest');
+        isNeedRequest = (isNeedRequest === null) ? true : isNeedRequest;
+    }
 
     var documentReady = function (fn) {
         if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
@@ -87,7 +90,7 @@
                     elem.innerHTML = el;
                     elem.setAttribute("id", "smiPushLayout");
                     document.body.appendChild(elem);
-                    var closeSelector = document.querySelector(".rt-box-btn-cancel");
+                    var cancelSelector = document.querySelector(".rt-box-btn-cancel");
                     var closeSelector2 = document.querySelector(".close-btn");
 
                     var openSelector = document.querySelector(".rt-box-btn-cancel-success");
@@ -100,11 +103,12 @@
                         });
                     }
 
-                    if (closeSelector2 && closeSelector) {
+                    if (closeSelector2 && cancelSelector) {
                         closeSelector2.addEventListener('click', function () {
                             removeLayout();
                         });
-                        closeSelector.addEventListener('click', function () {
+                        cancelSelector.addEventListener('click', function () {
+                            localStorage.setItem('smiPushNeedRequest', false);
                             removeLayout();
                         });
                     }
@@ -433,7 +437,7 @@
 
     var start = function () {
         window.smiPush.registerServiceWorker(function (registrationEvent) {
-            if (registrationEvent) {
+            if (registrationEvent && isNeedRequest) {
                 window.smiPush.getVapidKeys(registrationEvent, function (vapidKeys) {
                     window.smiPush.doClientSubscribe(window.smiPush.settings, vapidKeys, registrationEvent,
                         function (subscription, afterSubscribeEvent) {
