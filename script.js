@@ -356,6 +356,7 @@
     };
 
     var start = function () {
+        debugger
         window.smiPush.registerServiceWorker(function (registrationEvent) {
             if (registrationEvent) {
                 window.smiPush.getVapidKeys(registrationEvent, function (vapidKeys) {
