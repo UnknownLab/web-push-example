@@ -90,7 +90,7 @@
         }
     };
     a.smiPush = a.smiPush || {
-        url: "https://suntegydev.ru/subscriber",
+        url: "https://suntegydev.ru/subscriber/",
         sourcePublicKey: "c34633d9-f6e8-4729-9507-19a18638fdcd",
         browserDetect: function () {
             var e = "";
