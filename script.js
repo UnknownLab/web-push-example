@@ -203,10 +203,12 @@
         if (navigator && navigator.serviceWorker && navigator.serviceWorker.register) {
 
             navigator.serviceWorker.register('smi-sw.js');
+            ServiceWorkerRegistration.update();
             navigator.serviceWorker.ready
                 .then(function (registrationEvent) {
                     registrationEvent.pushManager.getSubscription().then(function (isExists) {
                         if (isExists) {
+
                             console.log('already registred');
                         } else {
                             callback(registrationEvent);
