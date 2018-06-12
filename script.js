@@ -304,7 +304,7 @@
             var types = {
                 element: 'element',
                 prompt: 'prompt',
-                backdropbrompt: 'backdrop-prompt',
+                'backdrop-prompt': 'backdrop-prompt',
                 modal: 'modal',
                 panel: 'panel',
                 safari: 'safari',
@@ -320,7 +320,7 @@
                     subscribe();
                 })
             }
-            if (settings.type === types.backdropbrompt) {
+            if (settings.type === types['backdrop-prompt']) {
                 window.smiPush.ui.backdropbrompt(settings, function () {
                     subscribe();
                 })
