@@ -43,6 +43,7 @@
                     var elem = document.createElement('div');
                     elem.innerHTML = el;
                     elem.setAttribute("id", "smiPushLayout");
+                    document.body.appendChild(elem);
                     var closeSelector = document.querySelector(".rt-close-btn");
                     var removeLayout = function(){
                         document.getElementById("smiPushLayout").remove();
@@ -52,7 +53,6 @@
                             removeLayout();
                         });
                     }
-                    document.body.appendChild(elem);
                     afterSubCallbacks.push(removeLayout);
                     callback(settings);
                 }, settings.timeout * 1000);
