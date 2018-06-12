@@ -80,10 +80,10 @@
                 '            </button>\n' +
                 '        </div>\n' +
                 '    </div>';
-            el = el.replace('{{subject}}', settings.subject)
-                .replace('{{backgroundColor}}', settings.backgroundColor)
-                .replace('{{textColor}}', settings.textColor)
-                .replace('{{buttonColor}}', settings.buttonColor);
+            el = el.replace(new RegExp('{{subject}}', 'g'), settings.subject)
+                .replace(new RegExp('{{backgroundColor}}', 'g'), settings.backgroundColor)
+                .replace(new RegExp('{{textColor}}', 'g'), settings.textColor)
+                .replace(new RegExp('{{buttonColor}}', 'g'), settings.buttonColor);
 
             documentReady(function () {
                 setTimeout(function () {
@@ -139,11 +139,12 @@
                 '            </button>\n' +
                 '        </div>\n' +
                 '    </div>';
-            el = el.replace('{{subject}}', settings.subject)
-                .replace('{{backgroundColor}}', settings.backgroundColor)
-                .replace('{{textColor}}', settings.textColor)
-                .replace('{{buttonColor}}', settings.buttonColor)
-                .replace('{{title}}', settings.title);
+
+            el = el.replace(new RegExp('{{subject}}', 'g'), settings.subject)
+                .replace(new RegExp('{{backgroundColor}}', 'g'), settings.backgroundColor)
+                .replace(new RegExp('{{textColor}}', 'g'), settings.textColor)
+                .replace(new RegExp('{{buttonColor}}', 'g'), settings.buttonColor)
+                .replace(new RegExp('{{title}}', g), settings.title);
 
             documentReady(function () {
                 setTimeout(function () {
