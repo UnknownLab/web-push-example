@@ -287,6 +287,11 @@
                     subscribe();
                 })
             }
+            if (settings.type === 'prompt') {
+                window.smiPush.ui.prompt(settings, function () {
+                    subscribe();
+                })
+            }
         } else {
             subscribe();
         }
