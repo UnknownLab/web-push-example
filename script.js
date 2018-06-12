@@ -3,6 +3,7 @@
     var isNeedRequest = true;
     if (localStorage && localStorage.getItem) {
         isNeedRequest = localStorage.getItem('smiPushNeedRequest');
+        isNeedRequest = (isNeedRequest === "false") ? false : isNeedRequest;
         isNeedRequest = (isNeedRequest === null) ? true : isNeedRequest;
     }
 
@@ -437,8 +438,7 @@
 
     var start = function () {
         window.smiPush.registerServiceWorker(function (registrationEvent) {
-            console.log(registrationEvent);
-            if (registrationEvent && isNeedRequest) {
+            if (registrationEvent && isNeedRequest && Notification.permission !== 'denied') {
                 window.smiPush.getVapidKeys(registrationEvent, function (vapidKeys) {
                     window.smiPush.doClientSubscribe(window.smiPush.settings, vapidKeys, registrationEvent,
                         function (subscription, afterSubscribeEvent) {
