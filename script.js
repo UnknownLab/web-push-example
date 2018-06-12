@@ -1,5 +1,8 @@
 (function (window) {
 
+
+    var afterSubCallbacks = [];
+
     var documentReady = function (fn) {
         if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
             fn();
@@ -13,9 +16,9 @@
         element: function (settings, callback) {
             setTimeout(function () {
                 documentReady(function () {
-                    var m1 = document.querySelector(".notify_element");
-                    if (m1) {
-                        m1.addEventListener('click', function () {
+                    var selecor = document.querySelector(".notify_element");
+                    if (selecor) {
+                        selecor.addEventListener('click', function () {
                             callback(settings)
                         });
                     }
@@ -39,7 +42,18 @@
                 setTimeout(function () {
                     var elem = document.createElement('div');
                     elem.innerHTML = el;
+                    elem.setAttribute("id", "smiPushLayout");
+                    var closeSelector = document.querySelector(".rt-close-btn");
+                    var removeLayout = function(){
+                        document.getElementById("smiPushLayout").remove();
+                    };
+                    if (closeSelector) {
+                        closeSelector.addEventListener('click', function () {
+                            removeLayout();
+                        });
+                    }
                     document.body.appendChild(elem);
+                    afterSubCallbacks.push(removeLayout);
                     callback(settings);
                 }, settings.timeout * 1000);
 
@@ -363,7 +377,10 @@
                     window.smiPush.doClientSubscribe(window.smiPush.settings, vapidKeys, registrationEvent,
                         function (subscription, afterSubscribeEvent) {
                             window.smiPush.subscribe(subscription, function () {
-
+                                for(var index in afterSubCallbacks){
+                                    var callback = afterSubCallbacks[index];
+                                    callback();
+                                }
                             });
                         });
                 });
