@@ -380,7 +380,7 @@
         doClientSubscribe: doClientSubscribe,
         settings: JSON.parse(JSON.stringify({
             "hint": "Нажмите на кнопку \"Разрешить\", чтобы получать новости с сайта ",
-            "type": "backdropb-rompt",
+            "type": "backdrop-prompt",
             "title": "Подписка на уведомления",
             "subject": "Разрешите сайту  отправлять вам уведомления на рабочий стол",
             "timeout": 5,
