@@ -4,14 +4,16 @@ self.addEventListener("push", function (event) {
         data = event.data.json();
     }
 
+
     var title = data.title;
-    var message = data.message;
+    var message = data.text;
     var icon = data.icon;
     var url = data.url;
 
     event.waitUntil(self.registration.showNotification(title, {
         body: message,
         icon: icon,
+        data: data
     }))
 
 });
