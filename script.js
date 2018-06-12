@@ -282,15 +282,23 @@
         };
 
         if (settings && settings.type) {
-            if (settings.type === 'element') {
+            var types = {
+                element: 'element',
+                prompt: 'prompt',
+            };
+            if (settings.type === types.element) {
                 window.smiPush.ui.element(settings, function () {
                     subscribe();
                 })
             }
-            if (settings.type === 'prompt') {
+            if (settings.type ===  types.prompt) {
                 window.smiPush.ui.prompt(settings, function () {
                     subscribe();
                 })
+            }
+
+            if(!types[settings.type]){
+                subscribe();
             }
         } else {
             subscribe();
