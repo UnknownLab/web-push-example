@@ -144,7 +144,7 @@
                 .replace(new RegExp('{{backgroundColor}}', 'g'), settings.backgroundColor)
                 .replace(new RegExp('{{textColor}}', 'g'), settings.textColor)
                 .replace(new RegExp('{{buttonColor}}', 'g'), settings.buttonColor)
-                .replace(new RegExp('{{title}}', g), settings.title);
+                .replace(new RegExp('{{title}}', 'g'), settings.title);
 
             documentReady(function () {
                 setTimeout(function () {
