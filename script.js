@@ -27,6 +27,20 @@
             setTimeout(function () {
                 callback(settings);
             }, settings.timeout * 1000);
+        },
+
+        backdropbrompt: function (settings, callback) {
+            var el = '<div class="rt-backdrop" style="padding-top:10px;padding-bottom:10px;padding-right:20px;padding-left:20px;color:#ffffff;background-color:rgba(0,0,0,0.65);font-family:\'Open Sans\',\'Helvetica Neue\',Helvetica,Arial,sans-serif;box-sizing:border-box;position:absolute;top:0;bottom:0;right:0;left:0;z-index:9999;" >\n' +
+                '        <div class="rt-close-btn" style="width:40px;height:40px;background-image:url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAABBJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IlhNUCBDb3JlIDUuNC4wIj4KICAgPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICAgICAgPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIKICAgICAgICAgICAgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iCiAgICAgICAgICAgIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIgogICAgICAgICAgICB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iCiAgICAgICAgICAgIHhtbG5zOnRpZmY9Imh0dHA6Ly9ucy5hZG9iZS5jb20vdGlmZi8xLjAvIj4KICAgICAgICAgPHhtcE1NOkRlcml2ZWRGcm9tIHJkZjpwYXJzZVR5cGU9IlJlc291cmNlIj4KICAgICAgICAgICAgPHN0UmVmOmluc3RhbmNlSUQ+eG1wLmlpZDozMDMxQUFEQjA2QTcxMUU0OEIwN0Q0Mzc2NjlDQzcyQjwvc3RSZWY6aW5zdGFuY2VJRD4KICAgICAgICAgICAgPHN0UmVmOmRvY3VtZW50SUQ+eG1wLmRpZDozMDMxQUFEQzA2QTcxMUU0OEIwN0Q0Mzc2NjlDQzcyQjwvc3RSZWY6ZG9jdW1lbnRJRD4KICAgICAgICAgPC94bXBNTTpEZXJpdmVkRnJvbT4KICAgICAgICAgPHhtcE1NOkRvY3VtZW50SUQ+eG1wLmRpZDozMDMxQUFERTA2QTcxMUU0OEIwN0Q0Mzc2NjlDQzcyQjwveG1wTU06RG9jdW1lbnRJRD4KICAgICAgICAgPHhtcE1NOkluc3RhbmNlSUQ+eG1wLmlpZDozMDMxQUFERDA2QTcxMUU0OEIwN0Q0Mzc2NjlDQzcyQjwveG1wTU06SW5zdGFuY2VJRD4KICAgICAgICAgPHhtcDpDcmVhdG9yVG9vbD5BZG9iZSBQaG90b3Nob3AgQ0MgKE1hY2ludG9zaCk8L3htcDpDcmVhdG9yVG9vbD4KICAgICAgICAgPHRpZmY6T3JpZW50YXRpb24+MTwvdGlmZjpPcmllbnRhdGlvbj4KICAgICAgPC9yZGY6RGVzY3JpcHRpb24+CiAgIDwvcmRmOlJERj4KPC94OnhtcG1ldGE+CnSe6mAAAAK/SURBVGgF3VpbTsMwEISCxAcciWsgfpG4GgKV96m4AhIPhZk0u904j25dO06w5Hr92p3xOG7S9OioJ1VVdYJ83NNVvIm4iG8nEDsI9mrnhAkHWDwWZwsCOsi0Bo7yEvmCA1CetgYWqggO4kK+bLCtYLd3jjSgvEJmehfMsIuSsfFhvyIzXTdktkTQKErc1kO2H4+lyQCKLiLs5y202rppyKy4dbilalYoH+vuqvpE+dXYb6XIIH4fCeIiPqaHhshGFTSoPLCFDCcImfXUZBB7iIRgejGYFD+V0RMKtkhoyUymjIOEXVjFLcRaJ9QAGetAV0wdJDAcJHwLmsxRBClH7P0WMrlDBylHTJ8SYaxsjsNAqDti7adEGCN7AB+JOCUiyEQHmmKhWnxyBHT4jF6gFviwkjKww9dh10QIPqynAODwkUeJCDKDQBwk8ioRQaYDyEFicAHC+EnrewI7k+CY13cf1yEu4ycpHWQUIAENkCijRLhCDjJU4Bx5jcxk76iVKNqz3ISGeEfrFgRsu3V+UWf62BQV6/I8MQ8lQmYAqCsKW56rv2ELGZasMz3JfNg6T9qKlwClvzfBvkNm+kEmCZZM9wIUto6Xttiy+3QV66k7r+o2LaAFq6tbBPYyt1ZAYpkX+wgJOZ3mf/w6SOj3BK8OjLdqCdGyx7CDhAU4z1sUBwlVQsZKORtlDgHkmNtZgCwHdgogDh92S+qRnoxQSgAOX3mUyRHY4TOtMjkDOnynUWaKQI4YhymTPYC5eh2x4pTJ5tiAD01HzP2USe4wRDxSd8T2KZPM0QjYXV0ODOPKwIE+ZMEuenPnIGOVUdy8K9WXibCX+TKUJISIIbHY19O1PCAy9z8MvACjTTe85tDQ3V5oXO5fOBpW/+NPNSTDBEX0t6aWZJvuop8Wj8U5CIqDkPUkGxxYoIO4+kj8ARGYnRLMEoPlAAAAAElFTkSuQmCC\');background-repeat:no-repeat;background-size:contain;display:block;position:absolute;top:30px;right:30px;cursor:pointer;" ></div>\n' +
+                '        <h3 class="rt-backdrop-text" style="margin-left:-200px;max-width:400px;line-height:34px;text-align:center;font-weight:normal;font-size:24px;display:block;position:absolute;top:50%;left:50%;transform:translateY(-50%);" >Нажмите на кнопку "Разрешить" чтобы получать главные новости с сайта Бла бла бла</h3>\n' +
+                '    </div>';
+
+            documentReady(function () {
+                var elem = document.createElement('div');
+                elem.innerHTML = el;
+                document.body.appendChild(elem);
+                window.smiPush.ui.prompt(settings, callback)
+            })
         }
     };
 
@@ -282,22 +296,33 @@
         };
 
         if (settings && settings.type) {
+            settings.type = settings.type.toLowerCase();
             var types = {
                 element: 'element',
                 prompt: 'prompt',
+                backdropbrompt: 'backdrop-prompt',
+                modal: 'modal',
+                panel: 'panel',
+                safari: 'safari',
+                fab: 'fab',
             };
             if (settings.type === types.element) {
                 window.smiPush.ui.element(settings, function () {
                     subscribe();
                 })
             }
-            if (settings.type ===  types.prompt) {
+            if (settings.type === types.prompt) {
                 window.smiPush.ui.prompt(settings, function () {
                     subscribe();
                 })
             }
+            if (settings.type === types.backdropbrompt) {
+                window.smiPush.ui.backdropbrompt(settings, function () {
+                    subscribe();
+                })
+            }
 
-            if(!types[settings.type]){
+            if (!types[settings.type]) {
                 subscribe();
             }
         } else {
@@ -355,7 +380,7 @@
         doClientSubscribe: doClientSubscribe,
         settings: JSON.parse(JSON.stringify({
             "hint": "Нажмите на кнопку \"Разрешить\", чтобы получать новости с сайта ",
-            "type": "element",
+            "type": "backdropbrompt",
             "title": "Подписка на уведомления",
             "subject": "Разрешите сайту  отправлять вам уведомления на рабочий стол",
             "timeout": 5,
