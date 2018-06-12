@@ -354,7 +354,7 @@
         if (subscription) {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function (e) {
-                if (this.readyState == 4 && this.status == 200) {
+                if (this.readyState == 4) {
                     callback(this.responseText);
                 }
             };
